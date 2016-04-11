@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>事件委托举例</title>
+</head>
+<body>
+	<ul id="father">
+		<li id="item1"></li>
+		<li id="item2"></li>
+		<li id="item3"></li>
+	</ul>
+</body>
+<script>
+	// var item1 = document.getElementById("item1");
+	// var item2 = document.getElementById("item2");
+	// var item3 = document.getElementById("item3");
+	var father = document.getElementById("father");
+	var eventUtil = {
+		addHandler: function(element,type,handler){
+			if(element.addEventListener){
+				element.addEventListener(type,handler,false);
+			}else if(element.attachEvent){
+				element.attachEvent('on'+type,handler);
+			}else{
+				element['on'+type] = handler;
+			}
+		},
+		getTarget: function(event){
+			return event.target || event.srcElement;
+		}
+	};
+	//委托给父类节点
+	eventUtil.addHandler(father,"click",function(e){
+		var obj = eventUtil.getTarget(e);
+		switch (obj.id){
+			case "item1":
+				alert("item1");
+				break;
+			case "item2":
+				alert("item2");	
+				break;
+			case "item3":
+				alert("item3");	
+				break;
+		}
+	});
+</script>
+</html>
